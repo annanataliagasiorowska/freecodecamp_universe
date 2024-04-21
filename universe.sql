@@ -53,7 +53,7 @@ CREATE TABLE public.galaxy (
     is_virgosupercluster boolean,
     age_in_millions_of_years integer,
     diameter_in_parsecs numeric NOT NULL,
-    shape character varying(30)
+    shape text
 );
 
 
@@ -82,52 +82,17 @@ ALTER SEQUENCE public.galaxy_galaxy_id_seq OWNED BY public.galaxy.galaxy_id;
 
 
 --
--- Name: galaxy_types; Type: TABLE; Schema: public; Owner: freecodecamp
+-- Name: mineral; Type: TABLE; Schema: public; Owner: freecodecamp
 --
 
-CREATE TABLE public.galaxy_types (
-    galaxy_type_id integer NOT NULL,
-    name character varying(30),
-    description text
-);
-
-
-ALTER TABLE public.galaxy_types OWNER TO freecodecamp;
-
---
--- Name: galaxy_types_galaxy_type_id_seq; Type: SEQUENCE; Schema: public; Owner: freecodecamp
---
-
-CREATE SEQUENCE public.galaxy_types_galaxy_type_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.galaxy_types_galaxy_type_id_seq OWNER TO freecodecamp;
-
---
--- Name: galaxy_types_galaxy_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: freecodecamp
---
-
-ALTER SEQUENCE public.galaxy_types_galaxy_type_id_seq OWNED BY public.galaxy_types.galaxy_type_id;
-
-
---
--- Name: minerals; Type: TABLE; Schema: public; Owner: freecodecamp
---
-
-CREATE TABLE public.minerals (
+CREATE TABLE public.mineral (
     mineral_id integer NOT NULL,
-    name character varying(30),
+    name character varying(30) NOT NULL,
     valuable_raw_material boolean
 );
 
 
-ALTER TABLE public.minerals OWNER TO freecodecamp;
+ALTER TABLE public.mineral OWNER TO freecodecamp;
 
 --
 -- Name: minerals_mineral_id_seq; Type: SEQUENCE; Schema: public; Owner: freecodecamp
@@ -148,7 +113,7 @@ ALTER TABLE public.minerals_mineral_id_seq OWNER TO freecodecamp;
 -- Name: minerals_mineral_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: freecodecamp
 --
 
-ALTER SEQUENCE public.minerals_mineral_id_seq OWNED BY public.minerals.mineral_id;
+ALTER SEQUENCE public.minerals_mineral_id_seq OWNED BY public.mineral.mineral_id;
 
 
 --
@@ -196,24 +161,12 @@ CREATE TABLE public.planet (
     planet_id integer NOT NULL,
     name character varying(30),
     has_life boolean,
-    star_id integer,
+    star_id integer NOT NULL,
     light_years_from_earth double precision
 );
 
 
 ALTER TABLE public.planet OWNER TO freecodecamp;
-
---
--- Name: planet_minerals; Type: TABLE; Schema: public; Owner: freecodecamp
---
-
-CREATE TABLE public.planet_minerals (
-    planet_id integer NOT NULL,
-    mineral_id integer NOT NULL
-);
-
-
-ALTER TABLE public.planet_minerals OWNER TO freecodecamp;
 
 --
 -- Name: planet_planet_id_seq; Type: SEQUENCE; Schema: public; Owner: freecodecamp
@@ -282,17 +235,10 @@ ALTER TABLE ONLY public.galaxy ALTER COLUMN galaxy_id SET DEFAULT nextval('publi
 
 
 --
--- Name: galaxy_types galaxy_type_id; Type: DEFAULT; Schema: public; Owner: freecodecamp
+-- Name: mineral mineral_id; Type: DEFAULT; Schema: public; Owner: freecodecamp
 --
 
-ALTER TABLE ONLY public.galaxy_types ALTER COLUMN galaxy_type_id SET DEFAULT nextval('public.galaxy_types_galaxy_type_id_seq'::regclass);
-
-
---
--- Name: minerals mineral_id; Type: DEFAULT; Schema: public; Owner: freecodecamp
---
-
-ALTER TABLE ONLY public.minerals ALTER COLUMN mineral_id SET DEFAULT nextval('public.minerals_mineral_id_seq'::regclass);
+ALTER TABLE ONLY public.mineral ALTER COLUMN mineral_id SET DEFAULT nextval('public.minerals_mineral_id_seq'::regclass);
 
 
 --
@@ -333,26 +279,20 @@ INSERT INTO public.galaxy VALUES (10, 'NGC 6822', false, 10000, 3600, 'Irregular
 
 
 --
--- Data for Name: galaxy_types; Type: TABLE DATA; Schema: public; Owner: freecodecamp
+-- Data for Name: mineral; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
-
-
---
--- Data for Name: minerals; Type: TABLE DATA; Schema: public; Owner: freecodecamp
---
-
-INSERT INTO public.minerals VALUES (1, 'Iron', true);
-INSERT INTO public.minerals VALUES (2, 'Silicon', true);
-INSERT INTO public.minerals VALUES (3, 'Nickel', true);
-INSERT INTO public.minerals VALUES (4, 'Magnesium', false);
-INSERT INTO public.minerals VALUES (5, 'Oxygen', false);
-INSERT INTO public.minerals VALUES (6, 'Carbon', false);
-INSERT INTO public.minerals VALUES (7, 'Calcium', false);
-INSERT INTO public.minerals VALUES (8, 'Sulfur', false);
-INSERT INTO public.minerals VALUES (9, 'Hydrogene', true);
-INSERT INTO public.minerals VALUES (10, 'Helium', true);
-INSERT INTO public.minerals VALUES (11, 'Methane', true);
+INSERT INTO public.mineral VALUES (1, 'Iron', true);
+INSERT INTO public.mineral VALUES (2, 'Silicon', true);
+INSERT INTO public.mineral VALUES (3, 'Nickel', true);
+INSERT INTO public.mineral VALUES (4, 'Magnesium', false);
+INSERT INTO public.mineral VALUES (5, 'Oxygen', false);
+INSERT INTO public.mineral VALUES (6, 'Carbon', false);
+INSERT INTO public.mineral VALUES (7, 'Calcium', false);
+INSERT INTO public.mineral VALUES (8, 'Sulfur', false);
+INSERT INTO public.mineral VALUES (9, 'Hydrogene', true);
+INSERT INTO public.mineral VALUES (10, 'Helium', true);
+INSERT INTO public.mineral VALUES (11, 'Methane', true);
 
 
 --
@@ -407,45 +347,6 @@ INSERT INTO public.planet VALUES (19, 'Eris', false, 14, 1.427e-05);
 
 
 --
--- Data for Name: planet_minerals; Type: TABLE DATA; Schema: public; Owner: freecodecamp
---
-
-INSERT INTO public.planet_minerals VALUES (2, 1);
-INSERT INTO public.planet_minerals VALUES (2, 2);
-INSERT INTO public.planet_minerals VALUES (2, 5);
-INSERT INTO public.planet_minerals VALUES (3, 6);
-INSERT INTO public.planet_minerals VALUES (3, 2);
-INSERT INTO public.planet_minerals VALUES (3, 8);
-INSERT INTO public.planet_minerals VALUES (4, 1);
-INSERT INTO public.planet_minerals VALUES (4, 5);
-INSERT INTO public.planet_minerals VALUES (4, 2);
-INSERT INTO public.planet_minerals VALUES (4, 4);
-INSERT INTO public.planet_minerals VALUES (4, 6);
-INSERT INTO public.planet_minerals VALUES (4, 8);
-INSERT INTO public.planet_minerals VALUES (4, 3);
-INSERT INTO public.planet_minerals VALUES (4, 7);
-INSERT INTO public.planet_minerals VALUES (5, 1);
-INSERT INTO public.planet_minerals VALUES (5, 2);
-INSERT INTO public.planet_minerals VALUES (5, 8);
-INSERT INTO public.planet_minerals VALUES (5, 4);
-INSERT INTO public.planet_minerals VALUES (6, 9);
-INSERT INTO public.planet_minerals VALUES (6, 10);
-INSERT INTO public.planet_minerals VALUES (7, 9);
-INSERT INTO public.planet_minerals VALUES (7, 10);
-INSERT INTO public.planet_minerals VALUES (8, 10);
-INSERT INTO public.planet_minerals VALUES (8, 9);
-INSERT INTO public.planet_minerals VALUES (15, 5);
-INSERT INTO public.planet_minerals VALUES (15, 6);
-INSERT INTO public.planet_minerals VALUES (15, 2);
-INSERT INTO public.planet_minerals VALUES (16, 6);
-INSERT INTO public.planet_minerals VALUES (16, 2);
-INSERT INTO public.planet_minerals VALUES (16, 1);
-INSERT INTO public.planet_minerals VALUES (9, 10);
-INSERT INTO public.planet_minerals VALUES (8, 11);
-INSERT INTO public.planet_minerals VALUES (9, 9);
-
-
---
 -- Data for Name: star; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
@@ -470,13 +371,6 @@ INSERT INTO public.star VALUES (14, 'Sun', 1, 4600, 'G2V');
 --
 
 SELECT pg_catalog.setval('public.galaxy_galaxy_id_seq', 10, true);
-
-
---
--- Name: galaxy_types_galaxy_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: freecodecamp
---
-
-SELECT pg_catalog.setval('public.galaxy_types_galaxy_type_id_seq', 1, false);
 
 
 --
@@ -508,11 +402,11 @@ SELECT pg_catalog.setval('public.star_star_id_seq', 14, true);
 
 
 --
--- Name: planet_minerals compound_pk; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+-- Name: galaxy galaxy_name_key; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
 --
 
-ALTER TABLE ONLY public.planet_minerals
-    ADD CONSTRAINT compound_pk PRIMARY KEY (planet_id, mineral_id);
+ALTER TABLE ONLY public.galaxy
+    ADD CONSTRAINT galaxy_name_key UNIQUE (name);
 
 
 --
@@ -524,19 +418,35 @@ ALTER TABLE ONLY public.galaxy
 
 
 --
--- Name: galaxy_types galaxy_types_pkey; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+-- Name: mineral mineral_name_key; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
 --
 
-ALTER TABLE ONLY public.galaxy_types
-    ADD CONSTRAINT galaxy_types_pkey PRIMARY KEY (galaxy_type_id);
+ALTER TABLE ONLY public.mineral
+    ADD CONSTRAINT mineral_name_key UNIQUE (name);
 
 
 --
--- Name: minerals minerals_pkey; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+-- Name: mineral minerals_name_key; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
 --
 
-ALTER TABLE ONLY public.minerals
+ALTER TABLE ONLY public.mineral
+    ADD CONSTRAINT minerals_name_key UNIQUE (name);
+
+
+--
+-- Name: mineral minerals_pkey; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.mineral
     ADD CONSTRAINT minerals_pkey PRIMARY KEY (mineral_id);
+
+
+--
+-- Name: moon moon_name_key; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.moon
+    ADD CONSTRAINT moon_name_key UNIQUE (name);
 
 
 --
@@ -548,11 +458,27 @@ ALTER TABLE ONLY public.moon
 
 
 --
+-- Name: planet planet_name_key; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.planet
+    ADD CONSTRAINT planet_name_key UNIQUE (name);
+
+
+--
 -- Name: planet planet_pkey; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
 --
 
 ALTER TABLE ONLY public.planet
     ADD CONSTRAINT planet_pkey PRIMARY KEY (planet_id);
+
+
+--
+-- Name: star star_name_key; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.star
+    ADD CONSTRAINT star_name_key UNIQUE (name);
 
 
 --
@@ -572,10 +498,10 @@ ALTER TABLE ONLY public.galaxy
 
 
 --
--- Name: minerals unique_mineral_name; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+-- Name: mineral unique_mineral_name; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
 --
 
-ALTER TABLE ONLY public.minerals
+ALTER TABLE ONLY public.mineral
     ADD CONSTRAINT unique_mineral_name UNIQUE (name);
 
 
@@ -609,22 +535,6 @@ ALTER TABLE ONLY public.star
 
 ALTER TABLE ONLY public.moon
     ADD CONSTRAINT moon_planet_id_fkey FOREIGN KEY (planet_id) REFERENCES public.planet(planet_id);
-
-
---
--- Name: planet_minerals planet_minerals_mineral_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: freecodecamp
---
-
-ALTER TABLE ONLY public.planet_minerals
-    ADD CONSTRAINT planet_minerals_mineral_id_fkey FOREIGN KEY (mineral_id) REFERENCES public.minerals(mineral_id);
-
-
---
--- Name: planet_minerals planet_minerals_planet_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: freecodecamp
---
-
-ALTER TABLE ONLY public.planet_minerals
-    ADD CONSTRAINT planet_minerals_planet_id_fkey FOREIGN KEY (planet_id) REFERENCES public.planet(planet_id);
 
 
 --
